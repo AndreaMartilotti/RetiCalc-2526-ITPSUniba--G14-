@@ -37,7 +37,7 @@ int main (){
 
 	//IMPOSTAZIONI SOCKADDR_IN
 	server.sin_family = AF_INET;
-	server.sin_addr = INADDR_ANY; //settaggio ip fisso in fase succcessiva
+	server.sin_addr.s_addr = inet_addr("127.0.0.1"); //settaggio ip fisso in fase succcessiva
 	server.sin_port = htons(0); //messa in assegnazione automatica, eventuale settaggio in fase successiva
 
 	//BINDING DEI SETTINGS ALLA SOCKET ServerSocket
@@ -58,7 +58,8 @@ int main (){
 	}
 
 	printf("\n\nServer attivo all'indirizzo: %s e porta: %d\n\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port));
-
+	int e;
+	scanf("%d", &e);
 
 
 	return 0;
