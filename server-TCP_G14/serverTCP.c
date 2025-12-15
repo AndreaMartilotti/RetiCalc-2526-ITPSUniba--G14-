@@ -11,8 +11,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <winsock.h>
+#define MAX_LEN 50
 
 
+typedef struct MSG{
+	int value;
+	char msg[MAX_LEN];
+};
 
 int main (){
 	WSADATA wsaData;
@@ -61,6 +66,31 @@ int main (){
 	int e;
 	scanf("%d", &e);
 
+	printf("\n\nIn attesa di nuove connessioni...\n\n");
+
+	//COSTRUZIONE SOCKET CLIENT
+	struct sockaddr_in clientAdd;
+	int clientSocket;
+	int clientLen;
+
+	while(1){
+		clientLen=sizeof(clientAdd);
+		if((clientSocket=accept(ServerSocket, (struct sockaddr *)&clientAdd, &clientLen))<0){
+			perror("\n\nAccettazione fallita\n\n");
+			closesocket(ServerSocket);
+			return -1;
+		}
+
+		MSG messaggio;
+
+		if(recv(clientSocket, (char *)&messaggio, sizeof(messaggio.message), 0)<0){
+			perror("\n\nMSG error\n\n");
+			return -1;
+		}
+	}
+
+
+	//RECIVE
 
 	return 0;
 }
