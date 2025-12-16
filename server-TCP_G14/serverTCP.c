@@ -15,7 +15,7 @@
 typedef struct _MSG{
 	int value;
 	char msg[MAX_LEN];
-}messa;
+}messaggio;
 
 
 
@@ -105,7 +105,7 @@ int main (){
 		}
 		printf("Connessione accettata da IP: %s, Porta: %d\n", inet_ntoa(clientAdd.sin_addr), ntohs(clientAdd.sin_port));
 
-		messa messaggio;
+		messaggio messaggio;
 
 		if(recv(clientSocket, (char *)&messaggio, sizeof(messaggio.msg), 0)<0){
 			perror("\n\nMSG recive error\n\n");
