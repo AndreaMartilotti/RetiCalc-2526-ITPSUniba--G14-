@@ -123,6 +123,9 @@ int main (){
 				return -1;
 			}
 			printf("\n\nMessaggio inviato\n\n");
+			//chiudi connessione
+			closesocket(clientSocket);
+			printf("\n\nIn attesa di nuove connessioni...\n\n");
 
 		}
 
