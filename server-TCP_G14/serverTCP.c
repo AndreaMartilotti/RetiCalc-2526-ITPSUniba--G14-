@@ -30,12 +30,10 @@ void cancellaVocali(char* str, int MAX_LENG){
     		for(int i=index;i<MAX_LENG;i++){
     			str[i]=str[i+1];
     		}
-    		printf("\n\npost eliminazione: %s", str);
             //printf("\n\n%d passo: %s",index,stringa);
     	}
     	else{
     	    index++;
-    	    printf("\npassato\n");
     	}
 	}
 }
@@ -66,7 +64,7 @@ int main (){
 	//IMPOSTAZIONI SOCKADDR_IN
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = inet_addr("127.0.0.1"); //settaggio ip fisso in fase succcessiva
-	server.sin_port = htons(27015); //messa in assegnazione automatica, eventuale settaggio in fase successiva
+	server.sin_port = htons(10990);
 
 	//BINDING DEI SETTINGS ALLA SOCKET ServerSocket
 	if(bind(ServerSocket, (struct sockaddr*)&server, sizeof(server))<0){
@@ -86,8 +84,7 @@ int main (){
 	}
 
 	printf("\n\nServer attivo all'indirizzo: %s e porta: %d\n\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port));
-	int e;
-	scanf("%d", &e);
+
 
 	printf("\n\nIn attesa di nuove connessioni...\n\n");
 
@@ -106,17 +103,21 @@ int main (){
 		printf("Connessione accettata da IP: %s, Porta: %d\n", inet_ntoa(clientAdd.sin_addr), ntohs(clientAdd.sin_port));
 
 		messaggio messaggio;
-
-		if(recv(clientSocket, (char *)&messaggio, sizeof(messaggio.msg), 0)<0){
+		int bytercv;
+		if((bytercv=recv(clientSocket, (char *)&messaggio, sizeof(messaggio), 0))<0){
 			perror("\n\nMSG recive error\n\n");
 			return -1;
 		}
+		else if(bytercv==0){
+			printf("\n\ncontinue\n\n");
+			continue;
+		}
 		else{
 			// rimuovi vocali
-			printf("\n\nMessaggio ricevuto da client %s : %s", inet_ntoa(clientAdd.sin_addr), messaggio.msg);
+			printf("\n\nMessaggio ricevuto da client %s : %s, value: %d\n", inet_ntoa(clientAdd.sin_addr), messaggio.msg, messaggio.value);
 			int strleng=strlen(messaggio.msg);
 			cancellaVocali(messaggio.msg, strleng);
-
+			printf("\n\nMessaggio preparato in invio: %s\n", messaggio.msg);
 			//sendtoclient
 			if(send(clientSocket, (char *)&messaggio, sizeof(messaggio.msg), 0)<0){
 				perror("\n\nMSG send error\n\n");
