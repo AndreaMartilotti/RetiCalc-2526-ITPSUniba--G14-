@@ -28,7 +28,6 @@ int main() {
 	int iResult = WSAStartup(wVersionRequested, &wsaData);
 	if (iResult != 0) {
 		printf("Error at WSAStartup()\n");
-		printf("A usable WinSock DLL cannot be found");
 		return -1;
 	}
 

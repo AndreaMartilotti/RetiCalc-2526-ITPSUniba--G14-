@@ -30,7 +30,6 @@ void cancellaVocali(char* str, int MAX_LENG){
     		for(int i=index;i<MAX_LENG;i++){
     			str[i]=str[i+1];
     		}
-            //printf("\n\n%d passo: %s",index,stringa);
     	}
     	else{
     	    index++;
@@ -47,7 +46,6 @@ int main (){
 	int iResult = WSAStartup(wVersionRequested, &wsaData);
 	if (iResult != 0) {
 		printf("Error at WSAStartup()\n");
-		printf("A usable WinSock DLL cannot be found");
 		return -1;
 	}
 
@@ -109,7 +107,6 @@ int main (){
 			return -1;
 		}
 		else if(bytercv==0){
-			printf("\n\ncontinue\n\n");
 			continue;
 		}
 		else{
