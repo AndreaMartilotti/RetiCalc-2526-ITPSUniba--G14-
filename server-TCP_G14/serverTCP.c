@@ -113,23 +113,31 @@ int main (){
 			continue;
 		}
 		else{
+			//messaggio "Hello" di aknowledgment
+			printf("\n\nRicevuti Dati dall'indirizzo: %s:%d. \nMessaggio:%s\n\n",inet_ntoa(clientAdd.sin_addr),ntohs(clientAdd.sin_port), messaggio.msg);
 			// rimuovi vocali
-			printf("\n\nMessaggio ricevuto da client %s : %s, value: %d\n", inet_ntoa(clientAdd.sin_addr), messaggio.msg, messaggio.value);
-			int strleng=strlen(messaggio.msg);
-			cancellaVocali(messaggio.msg, strleng);
-			printf("\n\nMessaggio preparato in invio: %s\n", messaggio.msg);
-			//sendtoclient
-			if(send(clientSocket, (char *)&messaggio, sizeof(messaggio.msg), 0)<0){
-				perror("\n\nMSG send error\n\n");
-				return -1;
+			if(recv(clientSocket, (char *)&messaggio, sizeof(messaggio), 0)<0){
+						perror("\n\nMSG recive error\n\n");
+						return -1;
+					}
+			else{
+				printf("\n\nMessaggio ricevuto da client %s : %s, value: %d\n", inet_ntoa(clientAdd.sin_addr), messaggio.msg, messaggio.value);
+				int strleng=strlen(messaggio.msg);
+				cancellaVocali(messaggio.msg, strleng);
+				printf("\n\nMessaggio preparato in invio: %s\n", messaggio.msg);
+				//sendtoclient
+				messaggio.value=200;
+				if(send(clientSocket, (char *)&messaggio, sizeof(messaggio), 0)<0){
+					perror("\n\nMSG send error\n\n");
+					return -1;
+				}
+				printf("\n\nMessaggio inviato\n\n");
+				//chiudi connessione
+				printf("\n\nIn attesa di nuove connessioni...\n\n");
 			}
-			printf("\n\nMessaggio inviato\n\n");
-			//chiudi connessione
-			closesocket(clientSocket);
-			printf("\n\nIn attesa di nuove connessioni...\n\n");
-
 		}
 
+		closesocket(clientSocket);
 	}
 
 
